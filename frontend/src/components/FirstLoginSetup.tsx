@@ -37,7 +37,8 @@ export default function FirstLoginSetup({ token, user, onComplete }: FirstLoginS
       icon: '📧',
       difficulty: 'Много лесно',
       security: 'Средно',
-      recommended: false
+      recommended: false,
+      comingSoon: true
     },
     {
       id: 'google_oauth',
@@ -52,12 +53,11 @@ export default function FirstLoginSetup({ token, user, onComplete }: FirstLoginS
   ];
 
   const handleMethodSelect = (method: string) => {
-    setSelectedMethod(method);
-    if (method === 'google_oauth') {
-      // TODO: Implement Google OAuth flow
-      alert('Google OAuth интеграцията ще бъде добавена скоро!');
+    if (authMethods.find(m => m.id === method)?.comingSoon) {
+      alert('Този метод ще бъде добавен скоро!');
       return;
     }
+    setSelectedMethod(method);
     setShowSetup(true);
   };
 
@@ -68,13 +68,11 @@ export default function FirstLoginSetup({ token, user, onComplete }: FirstLoginS
   if (showSetup && selectedMethod === 'google_authenticator') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center p-4">
-        <div className="w-full max-w-2xl">
-          <GoogleAuthenticatorSetup
-            token={token}
-            onSuccess={handleSetupSuccess}
-            onClose={() => setShowSetup(false)}
-          />
-        </div>
+        <GoogleAuthenticatorSetup
+          isOpen={true}
+          onSuccess={handleSetupSuccess}
+          onClose={() => setShowSetup(false)}
+        />
       </div>
     );
   }
