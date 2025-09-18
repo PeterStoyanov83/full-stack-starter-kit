@@ -1,14 +1,5 @@
 # Security Policy
 
-## Supported Versions
-
-We actively support the following versions with security updates:
-
-| Version | Supported          |
-| ------- | ------------------ |
-| 2.x.x   | :white_check_mark: |
-| 1.x.x   | :x:                |
-
 ## Security Features
 
 This application implements enterprise-grade security features:
