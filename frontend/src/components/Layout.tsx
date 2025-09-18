@@ -15,12 +15,51 @@ export default function Layout({ children }: LayoutProps) {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [systemHealth, setSystemHealth] = useState<{
+    status: 'healthy' | 'degraded' | 'offline';
+    lastCheck: Date;
+  }>({ status: 'healthy', lastCheck: new Date() });
 
   const handleLogout = async () => {
     try {
       await logout();
     } catch (error) {
       console.error('Logout error:', error);
+    }
+  };
+
+  const checkSystemHealth = async () => {
+    try {
+      const response = await fetch('http://localhost:8201/api/status', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Check if all services are healthy
+        const allServicesHealthy =
+          data.services?.database?.status === 'connected' &&
+          data.services?.cache?.status === 'active' &&
+          data.services?.redis?.status === 'connected';
+
+        setSystemHealth({
+          status: allServicesHealthy ? 'healthy' : 'degraded',
+          lastCheck: new Date()
+        });
+      } else {
+        setSystemHealth({
+          status: response.status >= 500 ? 'offline' : 'degraded',
+          lastCheck: new Date()
+        });
+      }
+    } catch (error) {
+      setSystemHealth({
+        status: 'offline',
+        lastCheck: new Date()
+      });
     }
   };
 
@@ -40,9 +79,18 @@ export default function Layout({ children }: LayoutProps) {
     };
 
     updateTime(); // Set initial time
-    const interval = setInterval(updateTime, 1000); // Update every second
+    const timeInterval = setInterval(updateTime, 1000); // Update every second
 
-    return () => clearInterval(interval);
+    // Health check
+    checkSystemHealth().catch(console.error); // Initial check
+    const healthInterval = setInterval(() => {
+      checkSystemHealth().catch(console.error);
+    }, 30000); // Check every 30 seconds
+
+    return () => {
+      clearInterval(timeInterval);
+      clearInterval(healthInterval);
+    };
   }, []);
 
   return (
@@ -56,8 +104,22 @@ export default function Layout({ children }: LayoutProps) {
               <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                 Vibecode
               </div>
-              <div className="ml-2 sm:ml-3 px-2 py-1 bg-gradient-to-r from-green-100 to-green-200 rounded-full">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              <div className={`ml-2 sm:ml-3 px-2 py-1 rounded-full cursor-pointer transition-all duration-300 ${
+                systemHealth.status === 'healthy'
+                  ? 'bg-gradient-to-r from-green-100 to-green-200 hover:from-green-200 hover:to-green-300'
+                  : systemHealth.status === 'degraded'
+                  ? 'bg-gradient-to-r from-yellow-100 to-yellow-200 hover:from-yellow-200 hover:to-yellow-300'
+                  : 'bg-gradient-to-r from-red-100 to-red-200 hover:from-red-200 hover:to-red-300'
+              }`}
+              title={`System Status: ${systemHealth.status} (Last checked: ${systemHealth.lastCheck.toLocaleTimeString('bg-BG')})`}
+              >
+                <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                  systemHealth.status === 'healthy'
+                    ? 'bg-green-500 animate-pulse'
+                    : systemHealth.status === 'degraded'
+                    ? 'bg-yellow-500 animate-pulse'
+                    : 'bg-red-500 animate-bounce'
+                }`}></div>
               </div>
             </div>
 
