@@ -23,28 +23,6 @@ This application implements enterprise-grade security features:
 - **Rate limiting** (ready for implementation)
 - **Redis security** with password protection
 
-## Reporting a Vulnerability
-
-We take security seriously. If you discover a security vulnerability, please follow these steps:
-
-### 1. **DO NOT** create a public issue
-Security vulnerabilities should not be reported publicly until they have been fixed.
-
-### 2. Send a detailed report via email
-Send your vulnerability report to: **security@example.com** (replace with your actual email)
-
-Include in your report:
-- Description of the vulnerability
-- Steps to reproduce the issue
-- Potential impact assessment
-- Suggested fix (if you have one)
-
-### 3. What to expect
-- **Acknowledgment**: We will acknowledge receipt within 48 hours
-- **Assessment**: We will assess the vulnerability within 5 business days
-- **Timeline**: We will provide a timeline for fixing the issue
-- **Credit**: We will credit you in our security advisories (if desired)
-
 ## Security Best Practices for Deployment
 
 ### Environment Configuration
