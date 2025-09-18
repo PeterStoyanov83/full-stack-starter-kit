@@ -111,7 +111,7 @@ export default function Layout({ children }: LayoutProps) {
                   ? 'bg-gradient-to-r from-yellow-100 to-yellow-200 hover:from-yellow-200 hover:to-yellow-300'
                   : 'bg-gradient-to-r from-red-100 to-red-200 hover:from-red-200 hover:to-red-300'
               }`}
-              title={`System Status: ${systemHealth.status} (Last checked: ${systemHealth.lastCheck.toLocaleTimeString('bg-BG')})`}
+              title={mounted ? `System Status: ${systemHealth.status} (Last checked: ${systemHealth.lastCheck.toLocaleTimeString('bg-BG')})` : 'System Status: Loading...'}
               >
                 <div className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                   systemHealth.status === 'healthy'
