@@ -32,18 +32,6 @@ export default function LoginForm({ onSuccess, onFirstLogin }: LoginFormProps) {
     }
   };
 
-  const testUsers = [
-    { name: 'Peter (Owner)', email: 'peterstoyanov83@gmail.com' },
-    { name: 'Елена Георгиева (Frontend)', email: 'elena@frontend.dev' },
-    { name: 'Марин Стоянов (Backend)', email: 'marin@backend.dev' },
-    { name: 'Ива Петкова (Designer)', email: 'iva@design.studio' },
-    { name: 'Стефан Николов (QA)', email: 'stefan@qa.test' },
-  ];
-
-  const quickLogin = (email: string) => {
-    setEmail(email);
-    setPassword('password');
-  };
 
   return (
     <div className="max-w-md mx-auto bg-white/90 backdrop-blur-md rounded-2xl shadow-2xl border border-white/20 p-8 transform hover:scale-[1.02] transition-all duration-300">
@@ -59,54 +47,6 @@ export default function LoginForm({ onSuccess, onFirstLogin }: LoginFormProps) {
         <p className="text-gray-500 text-sm">Влезте с вашите данни за достъп</p>
       </div>
 
-      {/* Quick login buttons */}
-      <div className="mb-8">
-        <p className="text-sm font-semibold text-gray-700 mb-4 flex items-center">
-          <svg className="w-4 h-4 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-          </svg>
-          Тестови потребители:
-        </p>
-        <div className="space-y-3">
-          {testUsers.map((testUser, index) => {
-            const roleColors = {
-              0: 'from-purple-500 to-purple-600', // Owner
-              1: 'from-blue-500 to-blue-600',     // Frontend
-              2: 'from-green-500 to-green-600',   // Backend
-              3: 'from-pink-500 to-pink-600',     // Designer
-              4: 'from-orange-500 to-orange-600'  // QA
-            };
-            const roleIcons = {
-              0: '👑', // Owner
-              1: '🎨', // Frontend
-              2: '⚙️', // Backend
-              3: '🎨', // Designer
-              4: '🧪'  // QA
-            };
-
-            return (
-              <button
-                key={index}
-                type="button"
-                onClick={() => quickLogin(testUser.email)}
-                className="w-full text-left p-4 bg-gradient-to-r from-gray-50 to-gray-100 hover:from-white hover:to-gray-50 rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md group"
-              >
-                <div className="flex items-center">
-                  <div className={`w-10 h-10 bg-gradient-to-r ${roleColors[index as keyof typeof roleColors]} rounded-full flex items-center justify-center text-white text-lg mr-3 group-hover:scale-110 transition-transform duration-300`}>
-                    {roleIcons[index as keyof typeof roleIcons]}
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
-                      {testUser.name}
-                    </div>
-                    <div className="text-xs text-gray-500 group-hover:text-gray-600">{testUser.email}</div>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
@@ -196,15 +136,6 @@ export default function LoginForm({ onSuccess, onFirstLogin }: LoginFormProps) {
         </button>
       </form>
 
-      <div className="mt-8 text-center">
-        <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-100">
-          <p className="text-xs text-gray-600 mb-2 font-medium">💡 Подсказка:</p>
-          <p className="text-xs text-gray-500">
-            Всички тестови потребители използват парола:
-            <code className="bg-white px-2 py-1 rounded font-mono text-blue-600 mx-1 border">password</code>
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
