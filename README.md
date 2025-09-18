@@ -29,28 +29,51 @@ Advanced AI tools catalog with role-based access, 2FA security, and comprehensiv
 
 ## 📋 Quick Start
 
-1. **Start the environment:**
+### Prerequisites
+- Docker and Docker Compose
+- Git
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <repository-url>
+   cd ai-tools-management-platform
+   ```
+
+2. **Start the environment:**
    ```bash
    ./start.sh
    ```
 
-2. **Setup Laravel backend:**
+3. **Setup Laravel backend:**
    ```bash
    ./laravel-setup.sh
    ```
+   This script will:
+   - Copy `.env.example` to `.env`
+   - Install PHP dependencies
+   - Generate application key
+   - Run database migrations
+   - Optionally seed the database
 
-3. **Access your applications:**
+4. **Access your applications:**
    - **Frontend**: http://localhost:8200
    - **Backend API**: http://localhost:8201
    - **API Status**: http://localhost:8201/api/status
    - **Redis Stats**: http://localhost:8201/api/redis/stats
 
-4. **Default Admin Account:**
-   - Email: `peterstoyanov83@gmail.com`
+5. **Default Admin Account:**
+   - Email: `admin@example.com`
    - Password: `password`
    - Role: Owner (full admin access)
 
-5. **Stop the environment:**
+### Important Notes
+- The setup script automatically configures all necessary environment variables
+- Database passwords are pre-configured to work with Docker containers
+- No manual configuration needed - everything works out of the box!
+
+6. **Stop the environment:**
    ```bash
    ./stop.sh
    ```

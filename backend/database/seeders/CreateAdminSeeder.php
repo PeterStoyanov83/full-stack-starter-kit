@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
-class CreatePeterSeeder extends Seeder
+class CreateAdminSeeder extends Seeder
 {
     /**
      * Run the database seeder.
@@ -17,17 +17,17 @@ class CreatePeterSeeder extends Seeder
         // Delete all existing users first
         User::truncate();
 
-        // Create Peter's owner account
+        // Create default admin account
         User::create([
-            'name' => 'Peter',
-            'email' => 'peterstoyanov83@gmail.com',
+            'name' => 'Admin User',
+            'email' => 'admin@example.com',
             'password' => Hash::make('password'),
             'role' => 'owner',
             'email_verified_at' => now(),
         ]);
 
-        echo "✅ Peter's owner account created successfully!\n";
-        echo "📧 Email: peterstoyanov83@gmail.com\n";
+        echo "✅ Default admin account created successfully!\n";
+        echo "📧 Email: admin@example.com\n";
         echo "🔐 Password: password\n";
         echo "👑 Role: owner\n";
     }

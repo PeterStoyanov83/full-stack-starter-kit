@@ -7,6 +7,12 @@ if ! docker compose ps | grep -q "Up"; then
     exit 1
 fi
 
+# Copy environment file if it doesn't exist
+if [ ! -f backend/.env ]; then
+    echo "📋 Copying environment configuration..."
+    cp backend/.env.example backend/.env
+fi
+
 # Install Composer dependencies
 echo "📦 Installing Composer dependencies..."
 docker compose exec php_fpm composer install --no-interaction
