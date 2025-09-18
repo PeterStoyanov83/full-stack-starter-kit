@@ -56,9 +56,6 @@ export default function Layout({ children }: LayoutProps) {
               <div className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-blue-600 via-purple-600 to-blue-800 bg-clip-text text-transparent group-hover:scale-105 transition-transform duration-300">
                 Vibecode
               </div>
-              <div className="hidden sm:block ml-2 text-sm text-gray-500 font-medium">
-                Full-Stack Starter Kit
-              </div>
               <div className="ml-2 sm:ml-3 px-2 py-1 bg-gradient-to-r from-green-100 to-green-200 rounded-full">
                 <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               </div>
@@ -122,7 +119,6 @@ export default function Layout({ children }: LayoutProps) {
 
                   {/* User info - hidden on small screens, shown on medium+ */}
                   <div className="hidden sm:block text-sm bg-gradient-to-r from-blue-50 to-purple-50 px-3 md:px-4 py-2 rounded-full border border-blue-200/50">
-                    <span className="text-gray-600">Здравей, </span>
                     <span className="font-semibold text-transparent bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text">
                       {user.name}
                     </span>
