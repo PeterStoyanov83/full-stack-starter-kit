@@ -14,8 +14,11 @@ class CreateAdminSeeder extends Seeder
      */
     public function run(): void
     {
-        // Delete all existing users first
-        User::truncate();
+        // Check if admin user already exists
+        if (User::where('email', 'admin@example.com')->exists()) {
+            echo "ℹ️ Admin user already exists, skipping creation.\n";
+            return;
+        }
 
         // Create default admin account
         User::create([

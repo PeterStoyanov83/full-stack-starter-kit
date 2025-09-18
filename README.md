@@ -63,10 +63,10 @@ Advanced AI tools catalog with role-based access, 2FA security, and comprehensiv
    - **API Status**: http://localhost:8201/api/status
    - **Redis Stats**: http://localhost:8201/api/redis/stats
 
-5. **Default Admin Account:**
-   - Email: `admin@example.com`
-   - Password: `password`
-   - Role: Owner (full admin access)
+5. **Default User Accounts:**
+   - **Owner (Admin)**: `ivan@admin.local` / `password` - Иван Иванов
+   - **Frontend Dev**: `elena@frontend.local` / `password` - Елена Петрова
+   - **Backend Dev**: `petar@backend.local` / `password` - Петър Георгиев
 
 ### Important Notes
 - The setup script automatically configures all necessary environment variables

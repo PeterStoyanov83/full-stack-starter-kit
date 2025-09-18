@@ -16,11 +16,9 @@ class ToolSeeder extends Seeder
     public function run(): void
     {
         // Get users and categories for tool creation
-        $peter = User::where('email', 'peterstoyanov83@gmail.com')->first();
-        $elena = User::where('email', 'elena@frontend.dev')->first();
-        $marin = User::where('email', 'marin@backend.dev')->first();
-        $iva = User::where('email', 'iva@design.studio')->first();
-        $stefan = User::where('email', 'stefan@qa.test')->first();
+        $elenan = User::where('email', 'ivan@admin.local')->first();
+        $elena = User::where('email', 'elena@frontend.local')->first();
+        $petar = User::where('email', 'petar@backend.local')->first();
 
         $codeCategory = Category::where('name', 'Разработка на код')->first();
         $designCategory = Category::where('name', 'Дизайн и UI/UX')->first();
@@ -48,10 +46,10 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => '1. Отидете на сайта\n2. Регистрирайте се\n3. Започнете чат',
                 'examples' => 'Генериране на код, писане на статии, отговори на въпроси',
                 'category_id' => $codeCategory?->id,
-                'user_id' => $peter->id,
+                'user_id' => $elenan->id,
                 'status' => 'approved',
                 'approved_at' => now()->subDays(5),
-                'approved_by' => $peter->id,
+                'approved_by' => $elenan->id,
                 'is_active' => true,
                 'tags' => [$premiumTag?->id, $apiTag?->id, $cloudTag?->id],
                 'roles' => ['frontend', 'backend']
@@ -64,10 +62,10 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'Инсталирайте разширението във VS Code',
                 'examples' => 'Автодопълване на функции, генериране на тестове',
                 'category_id' => $codeCategory?->id,
-                'user_id' => $marin->id,
+                'user_id' => $petar->id,
                 'status' => 'approved',
                 'approved_at' => now()->subDays(3),
-                'approved_by' => $peter->id,
+                'approved_by' => $elenan->id,
                 'is_active' => true,
                 'tags' => [$premiumTag?->id, $apiTag?->id],
                 'roles' => ['backend', 'frontend']
@@ -80,10 +78,10 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'Създайте акаунт и започнете нов проект',
                 'examples' => 'Дизайн на мобилни приложения, уеб интерфейси',
                 'category_id' => $designCategory?->id,
-                'user_id' => $iva->id,
+                'user_id' => $elena->id,
                 'status' => 'approved',
                 'approved_at' => now()->subDays(7),
-                'approved_by' => $peter->id,
+                'approved_by' => $elenan->id,
                 'is_active' => true,
                 'tags' => [$freeTag?->id, $premiumTag?->id, $cloudTag?->id],
                 'roles' => ['designer', 'frontend']
@@ -96,10 +94,10 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'pip install selenium && загледайте примерите',
                 'examples' => 'E2E тестове, regression тестване',
                 'category_id' => $qaCategory?->id,
-                'user_id' => $stefan->id,
+                'user_id' => $petar->id,
                 'status' => 'approved',
                 'approved_at' => now()->subDays(2),
-                'approved_by' => $peter->id,
+                'approved_by' => $elenan->id,
                 'is_active' => true,
                 'tags' => [$freeTag?->id, $openSourceTag?->id],
                 'roles' => ['qa', 'backend']
@@ -128,7 +126,7 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'Присъединете се към Discord сървъра',
                 'examples' => 'Концептуални изображения, лога, илюстрации',
                 'category_id' => $designCategory?->id,
-                'user_id' => $iva->id,
+                'user_id' => $elena->id,
                 'status' => 'pending',
                 'is_active' => true,
                 'tags' => [$premiumTag?->id, $cloudTag?->id],
@@ -142,7 +140,7 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'Свалете десктоп приложението',
                 'examples' => 'REST API тестване, документация на API',
                 'category_id' => $codeCategory?->id,
-                'user_id' => $marin->id,
+                'user_id' => $petar->id,
                 'status' => 'pending',
                 'is_active' => true,
                 'tags' => [$freeTag?->id, $premiumTag?->id, $apiTag?->id],
@@ -173,7 +171,7 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'Изисква Flash Player',
                 'examples' => 'Основни фигури и форми',
                 'category_id' => $designCategory?->id,
-                'user_id' => $iva->id,
+                'user_id' => $elena->id,
                 'status' => 'rejected',
                 'rejection_reason' => 'Инструментът използва остарели технологии (Flash) и не се поддържа активно. Препоръчваме модерни алтернативи.',
                 'is_active' => true,
@@ -190,10 +188,10 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'Инсталирайте Docker Desktop',
                 'examples' => 'Microservices, CI/CD, development environments',
                 'category_id' => $devopsCategory?->id,
-                'user_id' => $marin->id,
+                'user_id' => $petar->id,
                 'status' => 'approved',
                 'approved_at' => now()->subDays(1),
-                'approved_by' => $peter->id,
+                'approved_by' => $elenan->id,
                 'is_active' => true,
                 'tags' => [$freeTag?->id, $openSourceTag?->id, $cloudTag?->id],
                 'roles' => ['backend', 'qa']
@@ -206,10 +204,10 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'Създайте workspace и започнете със template',
                 'examples' => 'Wiki, task management, meeting notes',
                 'category_id' => $projectCategory?->id,
-                'user_id' => $peter->id,
+                'user_id' => $elenan->id,
                 'status' => 'approved',
                 'approved_at' => now()->subHours(6),
-                'approved_by' => $peter->id,
+                'approved_by' => $elenan->id,
                 'is_active' => true,
                 'tags' => [$freeTag?->id, $premiumTag?->id, $cloudTag?->id],
                 'roles' => ['frontend', 'backend', 'designer', 'qa']
@@ -225,7 +223,7 @@ class ToolSeeder extends Seeder
                 'user_id' => $elena->id,
                 'status' => 'approved',
                 'approved_at' => now()->subHours(12),
-                'approved_by' => $peter->id,
+                'approved_by' => $elenan->id,
                 'is_active' => true,
                 'tags' => [$freeTag?->id, $cloudTag?->id, $apiTag?->id],
                 'roles' => ['frontend', 'backend']
@@ -254,7 +252,7 @@ class ToolSeeder extends Seeder
                 'usage_instructions' => 'npm install --save-dev jest',
                 'examples' => 'Unit tests, mocking, snapshot testing',
                 'category_id' => $qaCategory?->id,
-                'user_id' => $stefan->id,
+                'user_id' => $petar->id,
                 'status' => 'pending',
                 'is_active' => true,
                 'tags' => [$freeTag?->id, $openSourceTag?->id],
