@@ -43,7 +43,8 @@ export default function Layout({ children }: LayoutProps) {
         const allServicesHealthy =
           data.services?.database?.status === 'connected' &&
           data.services?.cache?.status === 'active' &&
-          data.services?.redis?.status === 'connected';
+          data.services?.redis?.status === 'connected' &&
+          data.services?.authentication?.status === 'active';
 
         setSystemHealth({
           status: allServicesHealthy ? 'healthy' : 'degraded',

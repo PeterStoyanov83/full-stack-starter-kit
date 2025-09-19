@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import Layout from '@/components/Layout';
+import SystemHealthDashboard from '@/components/SystemHealthDashboard';
 import { ToolsAPI, Tool, ApprovalStats } from '@/lib/tools';
 import { UsersAPI, User as APIUser, SystemStats, UserFormData } from '@/lib/users';
 import {
@@ -572,6 +573,15 @@ export default function AdminPage() {
                   <BarChart3 className="w-12 h-12 text-purple-200" />
                 </div>
               </div>
+            </div>
+
+            {/* System Health Dashboard */}
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6">
+              <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
+                <Database className="w-6 h-6 mr-2 text-green-500" />
+                Система и мониторинг
+              </h3>
+              <SystemHealthDashboard />
             </div>
 
             {/* Recent Activity */}

@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\TwoFactorController;
 use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\ToolCommentController;
 use App\Http\Controllers\Api\ToolRatingController;
+use App\Http\Controllers\Api\SystemHealthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,51 +26,8 @@ use App\Http\Controllers\Api\ToolRatingController;
 */
 
 // API Status endpoint (public)
-Route::get('/status', function () {
-    return response()->json([
-        'status' => 'healthy',
-        'message' => 'API is running',
-        'timestamp' => now()->toISOString(),
-        'version' => '1.0.0',
-        'environment' => app()->environment(),
-        'services' => [
-            'database' => [
-                'status' => 'connected',
-                'name' => config('database.default')
-            ],
-            'cache' => [
-                'status' => 'active',
-                'driver' => config('cache.default')
-            ],
-            'redis' => [
-                'status' => 'connected',
-                'host' => config('database.redis.default.host'),
-                'port' => config('database.redis.default.port')
-            ],
-            'authentication' => [
-                'status' => 'active',
-                'driver' => 'sanctum'
-            ]
-        ],
-        'endpoints' => [
-            'public' => [
-                'GET /api/status',
-                'GET /api/categories',
-                'GET /api/tags',
-                'POST /api/login'
-            ],
-            'protected' => [
-                'GET /api/user',
-                'GET /api/dashboard',
-                'GET /api/tools',
-                'POST /api/tools',
-                'PUT /api/tools/{id}',
-                'DELETE /api/tools/{id}',
-                'POST /api/logout'
-            ]
-        ]
-    ]);
-});
+Route::get('/status', [SystemHealthController::class, 'status']);
+Route::get('/health/redis', [SystemHealthController::class, 'redisMetrics']);
 
 // Redis monitoring endpoint (public)
 Route::get('/redis/stats', function () {
