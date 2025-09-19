@@ -36,41 +36,51 @@ Advanced AI tools catalog with role-based access, 2FA security, and comprehensiv
 
 ### 🏠 Dashboard Overview
 ![Dashboard](./screenshots/dashboard.png)
+
 *Main dashboard showing role-specific welcome message, system statistics, and quick access to recent tools*
 
 ### 🔐 Authentication & Security
 ![Login Page](./screenshots/login.png)
+
 *Clean login interface with test user quick-access buttons*
 
 ![2FA Setup](./screenshots/2fa-setup.png)
+
 *Google Authenticator setup with QR code for mandatory two-factor authentication*
 
 ### 🛠️ AI Tools Management
 ![Tools Listing](./screenshots/tools-listing.png)
+
 *Main tools catalog with advanced filtering by category, tags, and roles*
 
 ![Tool Details](./screenshots/tool-details.png)
 *Detailed tool view with ratings, comments, and comprehensive information*
 
 ![Add Tool](./screenshots/add-tool.png)
+
 *Professional tool creation form with category and tag selection*
 
 ### ⭐ Comments & Ratings System
 ![Comments and Ratings](./screenshots/comments-ratings.png)
+
 *Interactive 5-star rating system with user comments and rating distribution*
 
 ### 👥 Admin Panel
 ![Admin Overview](./screenshots/admin-overview.png)
+
 *Administrative dashboard with system statistics and user management*
 
 ![User Management](./screenshots/user-management.png)
+
 *Complete user CRUD interface with role-based permissions*
 
 ![Tool Approval](./screenshots/tool-approval.png)
+
 *Tool approval workflow for content moderation*
 
 ### 📱 Mobile Responsive Design
 ![Mobile View](./screenshots/mobile-view.png)
+
 *Fully responsive design optimized for mobile devices*
 
 ### 🔍 Advanced Features
