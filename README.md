@@ -74,7 +74,8 @@ Advanced AI tools catalog with role-based access, 2FA security, and comprehensiv
 *Fully responsive design optimized for mobile devices*
 
 ### 🔍 Advanced Features
-![Activity Logs](./screenshots/activity-logs.png)
+![Activity Logs](./screenshots/activity-logs.png) 
+
 *Comprehensive activity logging and audit trail*
 
 ![System Monitoring](./screenshots/system-monitoring.png)
