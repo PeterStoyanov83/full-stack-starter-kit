@@ -206,7 +206,7 @@ export default function FirstLoginSetup({ token, user, onComplete }: FirstLoginS
         {/* Help section */}
         <div className="bg-gray-50 rounded-2xl p-6 text-center">
           <h3 className="text-lg font-semibold text-gray-800 mb-2">
-            Нужна ли ви помощ? 🤝
+            Нужна ли ви е помощ? 🤝
           </h3>
           <p className="text-sm text-gray-600 mb-4">
             Ако имате въпроси или затруднения с настройването, моля свържете се с администратора.

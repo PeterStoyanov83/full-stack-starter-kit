@@ -3,11 +3,17 @@
 import React, {createContext, useContext, useEffect, useState, ReactNode} from 'react';
 import {User, AuthAPI, AuthStorage} from '@/lib/auth';
 
+interface LoginResponse {
+    user: any;
+    token: string;
+    requires_2fa_setup?: boolean;
+}
+
 interface AuthContextType {
     user: User | null;
     token: string | null;
     isLoading: boolean;
-    login: (email: string, password: string) => Promise<void>;
+    login: (email: string, password: string) => Promise<LoginResponse>;
     logout: () => Promise<void>;
     isAuthenticated: boolean;
 }
@@ -53,7 +59,7 @@ export function AuthProvider({children}: AuthProviderProps) {
         initializeAuth();
     }, []);
 
-    const login = async (email: string, password: string): Promise<{user: any, token: string, requires_2fa_setup?: boolean}> => {
+    const login = async (email: string, password: string): Promise<LoginResponse> => {
         setIsLoading(true);
         try {
             const response = await AuthAPI.login(email, password);

@@ -20,6 +20,8 @@ class ToolController extends Controller
     public function index(Request $request): JsonResponse
     {
         $query = Tool::with(['category', 'creator', 'tags', 'recommendedUsers', 'approver'])
+                     ->withCount(['ratings', 'comments'])
+                     ->withAvg('ratings', 'rating')
                      ->active();
 
         // For non-owners, only show approved tools
@@ -54,9 +56,31 @@ class ToolController extends Controller
             });
         }
 
+        // Sorting
+        $sortBy = $request->get('sort_by', 'created_at');
+        $sortOrder = $request->get('sort_order', 'desc');
+
+        switch ($sortBy) {
+            case 'rating':
+                // Sort by average rating
+                $query->withCount('ratings')
+                      ->withAvg('ratings', 'rating')
+                      ->orderBy('ratings_avg_rating', $sortOrder);
+                break;
+            case 'comments':
+                // Sort by number of comments
+                $query->withCount('comments')->orderBy('comments_count', $sortOrder);
+                break;
+            case 'name':
+                $query->orderBy('name', $sortOrder);
+                break;
+            default:
+                $query->orderBy('created_at', $sortOrder);
+        }
+
         // Pagination
         $perPage = $request->get('per_page', 15);
-        $tools = $query->latest()->paginate($perPage);
+        $tools = $query->paginate($perPage);
 
         return response()->json($tools);
     }
@@ -168,7 +192,9 @@ class ToolController extends Controller
      */
     public function show(Tool $tool): JsonResponse
     {
-        $tool->load(['category', 'creator', 'tags', 'recommendedUsers']);
+        $tool->load(['category', 'creator', 'tags', 'recommendedUsers', 'ratings', 'comments'])
+             ->loadCount('ratings', 'comments')
+             ->loadAvg('ratings', 'rating');
 
         return response()->json($tool);
     }

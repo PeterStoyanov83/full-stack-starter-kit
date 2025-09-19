@@ -19,7 +19,7 @@ services:
       - ./frontend:/app:cached
       - /app/node_modules
       - /app/.next
-    command: sh -c "npm install && npm run dev"
+    command: sh -c "export NODE_ENV=development && npm install && npm run dev"
     environment:
       - NODE_ENV=development
       - NEXT_PUBLIC_API_URL=http://localhost:8201/api

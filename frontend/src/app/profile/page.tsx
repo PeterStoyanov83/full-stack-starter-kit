@@ -138,9 +138,16 @@ export default function ProfilePage() {
   const handleDisableTwoFactor = async () => {
     if (!token || !confirm('Сигурни ли сте, че искате да деактивирате двуфакторната автентикация?')) return;
 
+    if (!twoFactorStatus?.enabled_methods?.length) {
+      setError('Няма активни методи за деактивиране');
+      return;
+    }
+
     setTwoFactorLoading(true);
     try {
-      await TwoFactorAPI.disable(token);
+      // Disable the first enabled method (usually google_authenticator)
+      const method = twoFactorStatus.enabled_methods[0].method;
+      await TwoFactorAPI.disable(token, method);
       await loadTwoFactorStatus();
       setError('Двуфакторната автентикация е деактивирана успешно');
     } catch (error) {
@@ -247,7 +254,7 @@ export default function ProfilePage() {
           <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
             Моят профил
           </h1>
-          <p className="text-gray-600">Управлявайте профила и прегледайте активността си</p>
+          <p className="text-gray-600">Управлявайте своя профил и прегледайте активността си</p>
         </div>
 
         {error && (
@@ -400,7 +407,7 @@ export default function ProfilePage() {
                         <span className="ml-2 capitalize">{twoFactorStatus.enabled_methods[0]?.method}</span>
                       </div>
                       <div className="flex items-center text-sm text-gray-600">
-                        <span className="font-medium">Активирана на:</span>
+                        <span className="font-medium">Настроена на:</span>
                         <span className="ml-2">
                           {twoFactorStatus.enabled_methods[0]?.last_used_at ? new Date(twoFactorStatus.enabled_methods[0].last_used_at).toLocaleDateString('bg-BG') : 'Неизвестно'}
                         </span>

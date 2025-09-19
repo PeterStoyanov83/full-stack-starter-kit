@@ -14,41 +14,48 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create diverse users with different roles for comprehensive testing
+        // Create test users matching README documentation
         $users = [
             [
-                'name' => 'Peter',
-                'email' => 'peterstoyanov83@gmail.com',
+                'name' => 'Иван Иванов',
+                'email' => 'ivan@admin.local',
                 'password' => Hash::make('password'),
                 'role' => 'owner',
                 'email_verified_at' => now(),
             ],
             [
-                'name' => 'Елена Георгиева',
-                'email' => 'elena@frontend.dev',
+                'name' => 'Елена Петрова',
+                'email' => 'elena@frontend.local',
                 'password' => Hash::make('password'),
                 'role' => 'frontend',
                 'email_verified_at' => now(),
             ],
             [
-                'name' => 'Марин Стоянов',
-                'email' => 'marin@backend.dev',
+                'name' => 'Петър Георгиев',
+                'email' => 'petar@backend.local',
                 'password' => Hash::make('password'),
                 'role' => 'backend',
                 'email_verified_at' => now(),
             ],
             [
-                'name' => 'Ива Петкова',
-                'email' => 'iva@design.studio',
+                'name' => 'Мария Димитрова',
+                'email' => 'maria@design.local',
                 'password' => Hash::make('password'),
                 'role' => 'designer',
                 'email_verified_at' => now(),
             ],
             [
                 'name' => 'Стефан Николов',
-                'email' => 'stefan@qa.test',
+                'email' => 'stefan@qa.local',
                 'password' => Hash::make('password'),
                 'role' => 'qa',
+                'email_verified_at' => now(),
+            ],
+            [
+                'name' => 'Анна Петкова',
+                'email' => 'anna@pm.local',
+                'password' => Hash::make('password'),
+                'role' => 'pm',
                 'email_verified_at' => now(),
             ],
         ];

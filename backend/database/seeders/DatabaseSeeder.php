@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         // Call seeders in proper order
         $this->call([
             CreateAdminSeeder::class,  // Create default admin first
+            UserSeeder::class,         // Create test users
             CategorySeeder::class,
             TagSeeder::class,
             ToolSeeder::class,

@@ -200,7 +200,7 @@ export default function Layout({ children }: LayoutProps) {
                 </>
               ) : (
                 <div className="text-sm text-gray-600 bg-yellow-50 px-3 md:px-4 py-2 rounded-full border border-yellow-200">
-                  <span className="hidden sm:inline">🔓 Не сте влезли в системата</span>
+                  <span className="hidden sm:inline">🔓 Не сте влезли</span>
                   <span className="sm:hidden">🔓</span>
                 </div>
               )}

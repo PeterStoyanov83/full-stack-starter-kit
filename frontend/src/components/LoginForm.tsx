@@ -3,9 +3,15 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 
+interface LoginResponse {
+  user: any;
+  token: string;
+  requires_2fa_setup?: boolean;
+}
+
 interface LoginFormProps {
   onSuccess?: () => void;
-  onFirstLogin?: (loginData: {user: any, token: string, requires_2fa_setup?: boolean}) => void;
+  onFirstLogin?: (loginData: LoginResponse) => void;
 }
 
 export default function LoginForm({ onSuccess, onFirstLogin }: LoginFormProps) {

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Tool extends Model
 {
@@ -174,5 +175,75 @@ class Tool extends Model
     public function isRejected(): bool
     {
         return $this->status === self::STATUS_REJECTED;
+    }
+
+    /**
+     * Get the comments for this tool
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(ToolComment::class)->approved()->with('user')->latest();
+    }
+
+    /**
+     * Get the ratings for this tool
+     */
+    public function ratings(): HasMany
+    {
+        return $this->hasMany(ToolRating::class)->with('user');
+    }
+
+    /**
+     * Get average rating for this tool
+     */
+    public function getAverageRatingAttribute(): float
+    {
+        return round($this->ratings()->avg('rating') ?: 0, 1);
+    }
+
+    /**
+     * Get total number of ratings
+     */
+    public function getRatingCountAttribute(): int
+    {
+        return $this->ratings()->count();
+    }
+
+    /**
+     * Get rating distribution (1-5 stars)
+     */
+    public function getRatingDistributionAttribute(): array
+    {
+        $distribution = [];
+        for ($i = 1; $i <= 5; $i++) {
+            $distribution[$i] = $this->ratings()->where('rating', $i)->count();
+        }
+        return $distribution;
+    }
+
+    /**
+     * Get total number of comments
+     */
+    public function getCommentCountAttribute(): int
+    {
+        return $this->comments()->count();
+    }
+
+    /**
+     * Get star display for average rating
+     */
+    public function getStarDisplayAttribute(): string
+    {
+        $rating = floor($this->average_rating);
+        $hasHalf = ($this->average_rating - $rating) >= 0.5;
+
+        $stars = str_repeat('★', $rating);
+        if ($hasHalf) {
+            $stars .= '☆'; // Half star representation
+            $rating++;
+        }
+        $stars .= str_repeat('☆', 5 - $rating);
+
+        return $stars;
     }
 }

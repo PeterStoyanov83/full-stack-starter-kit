@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\TwoFactorController;
 use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\Api\ToolCommentController;
+use App\Http\Controllers\Api\ToolRatingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -122,6 +124,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('tools', ToolController::class)->middleware('role:owner|frontend|backend|qa')->except(['index', 'show']);
     Route::get('tools', [ToolController::class, 'index']);
     Route::get('tools/{tool}', [ToolController::class, 'show']);
+
+    // Tool Comments Routes
+    Route::prefix('tools/{tool}')->group(function () {
+        Route::get('/comments', [ToolCommentController::class, 'index']);
+        Route::post('/comments', [ToolCommentController::class, 'store']);
+        Route::put('/comments/{comment}', [ToolCommentController::class, 'update']);
+        Route::delete('/comments/{comment}', [ToolCommentController::class, 'destroy']);
+
+        Route::get('/rating', [ToolRatingController::class, 'show']);
+        Route::post('/rating', [ToolRatingController::class, 'store']);
+        Route::delete('/rating', [ToolRatingController::class, 'destroy']);
+    });
 
     // Tool Approval Routes (Owner only)
     Route::middleware('admin')->group(function () {

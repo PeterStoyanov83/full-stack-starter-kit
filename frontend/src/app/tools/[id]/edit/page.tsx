@@ -6,6 +6,7 @@ import { useRouter, useParams } from 'next/navigation';
 import Layout from '@/components/Layout';
 import ToolForm from '@/components/ToolForm';
 import { ToolsAPI, Tool, CreateToolData } from '@/lib/tools';
+import { CheckCircle, XCircle, AlertTriangle } from 'lucide-react';
 
 export default function EditToolPage() {
   const { isAuthenticated, token, user } = useAuth();
@@ -16,6 +17,9 @@ export default function EditToolPage() {
   const [tool, setTool] = useState<Tool | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectionReason, setRejectionReason] = useState('');
+  const [actionLoading, setActionLoading] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -51,6 +55,63 @@ export default function EditToolPage() {
 
   const handleCancel = () => {
     router.push(`/tools/${toolId}`);
+  };
+
+  const handleApprove = async () => {
+    if (!token || !tool) return;
+
+    try {
+      setActionLoading(true);
+      await ToolsAPI.approveTool(token, tool.id);
+      setTool({ ...tool, status: 'approved', approved_at: new Date().toISOString() });
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Грешка при одобряване');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const handleReject = async () => {
+    if (!token || !tool || !rejectionReason.trim()) return;
+
+    try {
+      setActionLoading(true);
+      await ToolsAPI.rejectTool(token, tool.id, rejectionReason);
+      setTool({ ...tool, status: 'rejected', rejection_reason: rejectionReason });
+      setShowRejectModal(false);
+      setRejectionReason('');
+    } catch (error) {
+      setError(error instanceof Error ? error.message : 'Грешка при отхвърляне');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  const getStatusBadge = (status: string) => {
+    const styles = {
+      pending: 'bg-yellow-100 text-yellow-800 border-yellow-200',
+      approved: 'bg-green-100 text-green-800 border-green-200',
+      rejected: 'bg-red-100 text-red-800 border-red-200'
+    };
+
+    const icons = {
+      pending: <AlertTriangle className="w-4 h-4" />,
+      approved: <CheckCircle className="w-4 h-4" />,
+      rejected: <XCircle className="w-4 h-4" />
+    };
+
+    const labels = {
+      pending: 'Чакащ одобрение',
+      approved: 'Одобрен',
+      rejected: 'Отхвърлен'
+    };
+
+    return (
+      <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium border ${styles[status as keyof typeof styles] || styles.pending}`}>
+        {icons[status as keyof typeof icons]}
+        <span className="ml-1">{labels[status as keyof typeof labels]}</span>
+      </span>
+    );
   };
 
   if (!isAuthenticated || !user) {
@@ -113,10 +174,58 @@ export default function EditToolPage() {
         <div className="mb-6">
           <button
             onClick={() => router.push(`/tools/${toolId}`)}
-            className="text-blue-600 hover:text-blue-800 flex items-center"
+            className="text-blue-600 hover:text-blue-800 flex items-center mb-4"
           >
             ← Обратно към детайлите на инструмента
           </button>
+
+          {/* Tool Status and Admin Controls */}
+          {user.role === 'owner' && (
+            <div className="bg-white/80 backdrop-blur-md rounded-2xl shadow-xl border border-white/20 p-6 mb-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Статус на инструмента</h3>
+                  <div className="flex items-center space-x-4">
+                    {getStatusBadge(tool.status)}
+                    {tool.status === 'approved' && tool.approved_at && (
+                      <span className="text-sm text-gray-500">
+                        Одобрен на: {new Date(tool.approved_at).toLocaleDateString('bg-BG')}
+                      </span>
+                    )}
+                    {tool.status === 'rejected' && tool.rejection_reason && (
+                      <span className="text-sm text-red-600">
+                        Причина: {tool.rejection_reason}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex space-x-3">
+                  {tool.status !== 'approved' && (
+                    <button
+                      onClick={handleApprove}
+                      disabled={actionLoading}
+                      className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center disabled:opacity-50"
+                    >
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      {actionLoading ? 'Одобряване...' : 'Одобри'}
+                    </button>
+                  )}
+
+                  {tool.status !== 'rejected' && (
+                    <button
+                      onClick={() => setShowRejectModal(true)}
+                      disabled={actionLoading}
+                      className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center disabled:opacity-50"
+                    >
+                      <XCircle className="w-4 h-4 mr-2" />
+                      Отхвърли
+                    </button>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         <ToolForm
@@ -126,6 +235,49 @@ export default function EditToolPage() {
           toolId={toolId}
           isEdit={true}
         />
+
+        {/* Rejection Modal */}
+        {showRejectModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Отхвърляне на инструмент</h3>
+
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Причина за отхвърляне *
+                </label>
+                <textarea
+                  value={rejectionReason}
+                  onChange={(e) => setRejectionReason(e.target.value)}
+                  placeholder="Моля, обяснете защо отхвърляте този инструмент..."
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 resize-none"
+                  rows={4}
+                  required
+                />
+              </div>
+
+              <div className="flex space-x-3">
+                <button
+                  onClick={() => {
+                    setShowRejectModal(false);
+                    setRejectionReason('');
+                  }}
+                  className="flex-1 bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors"
+                  disabled={actionLoading}
+                >
+                  Отказ
+                </button>
+                <button
+                  onClick={handleReject}
+                  disabled={actionLoading || !rejectionReason.trim()}
+                  className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                >
+                  {actionLoading ? 'Отхвърляне...' : 'Отхвърли'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );

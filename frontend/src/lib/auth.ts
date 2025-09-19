@@ -8,6 +8,11 @@ export interface User {
   email: string;
   role: string;
   role_display?: string;
+  created_at?: string;
+  updated_at?: string;
+  email_verified_at?: string;
+  is_active?: boolean;
+  tools_count?: number;
 }
 
 export interface LoginResponse {

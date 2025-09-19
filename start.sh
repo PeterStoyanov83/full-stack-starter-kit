@@ -32,9 +32,9 @@ if [ ! -f backend/.env ] || ! grep -q "APP_KEY=base64:" backend/.env; then
         docker compose exec -T php_fpm composer install --no-interaction --prefer-dist --optimize-autoloader || echo "⚠️  Composer install failed, continuing..."
     fi
     
-    # Run migrations
-    echo "🗄️ Running database migrations..."
-    docker compose exec -T php_fpm php artisan migrate --force || echo "⚠️  Migrations failed, continuing..."
+    # Fresh migrations with full demo data
+    echo "🗄️ Setting up database with demo data..."
+    docker compose exec -T php_fpm php artisan migrate:fresh --seed --force || echo "⚠️  Database setup failed, continuing..."
     
     # Cache configurations
     docker compose exec -T php_fpm php artisan config:cache || echo "⚠️  Config cache failed, continuing..."
@@ -43,6 +43,12 @@ if [ ! -f backend/.env ] || ! grep -q "APP_KEY=base64:" backend/.env; then
     # Set proper permissions
     docker compose exec -T php_fpm chown -R laravel:laravel /var/www/html/storage || echo "⚠️  Permission setup failed, continuing..."
     docker compose exec -T php_fpm chown -R laravel:laravel /var/www/html/bootstrap/cache || echo "⚠️  Permission setup failed, continuing..."
+fi
+
+# Install frontend dependencies if needed
+if [ ! -d "frontend/node_modules" ]; then
+    echo "📦 Installing Node.js dependencies..."
+    docker compose exec -T frontend npm install || echo "⚠️  NPM install failed, continuing..."
 fi
 
 echo "✅ Development environment started!"

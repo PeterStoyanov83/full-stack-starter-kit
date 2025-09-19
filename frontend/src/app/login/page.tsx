@@ -7,10 +7,16 @@ import Layout from '@/components/Layout';
 import LoginForm from '@/components/LoginForm';
 import FirstLoginSetup from '@/components/FirstLoginSetup';
 
+interface LoginResponse {
+  user: any;
+  token: string;
+  requires_2fa_setup?: boolean;
+}
+
 export default function LoginPage() {
   const { isAuthenticated } = useAuth();
   const router = useRouter();
-  const [firstLoginData, setFirstLoginData] = useState<{user: any, token: string, requires_2fa_setup?: boolean} | null>(null);
+  const [firstLoginData, setFirstLoginData] = useState<LoginResponse | null>(null);
 
   useEffect(() => {
     if (isAuthenticated && !firstLoginData) {

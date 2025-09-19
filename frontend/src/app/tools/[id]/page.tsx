@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter, useParams } from 'next/navigation';
 import Layout from '@/components/Layout';
+import ToolRating from '@/components/ToolRating';
+import Comments from '@/components/Comments';
 import { ToolsAPI, Tool } from '@/lib/tools';
 
 export default function ToolDetailsPage() {
@@ -212,7 +214,7 @@ export default function ToolDetailsPage() {
 
           {/* Creator Info */}
           <div className="border-t border-gray-200 pt-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">👤 Информация за създателя</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">👤 Създател:</h3>
             <div className="flex items-center space-x-4">
               <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
                 {tool.creator?.name.charAt(0).toUpperCase()}
@@ -230,6 +232,15 @@ export default function ToolDetailsPage() {
               )}
             </div>
           </div>
+        </div>
+
+        {/* Rating and Comments Section */}
+        <div className="mt-8 space-y-8">
+          {/* Tool Rating */}
+          <ToolRating toolId={tool.id} />
+
+          {/* Comments */}
+          <Comments toolId={tool.id} />
         </div>
       </div>
     </Layout>
