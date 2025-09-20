@@ -112,7 +112,7 @@ class SystemHealthController extends Controller
             $responseTime = microtime(true) - $connectionTime;
 
             return [
-                'status' => $pong === 'PONG' ? 'connected' : 'error',
+                'status' => ($pong === true || $pong === 'PONG') ? 'connected' : 'error',
                 'host' => config('database.redis.default.host'),
                 'port' => config('database.redis.default.port'),
                 'response_time' => round($responseTime * 1000, 2) . 'ms'
